@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [ "master" ]
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: Log level
 jobs:
   publish:
     runs-on: ubuntu-latest

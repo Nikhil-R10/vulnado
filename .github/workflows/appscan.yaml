@@ -1,28 +1,22 @@
-name: "AppScan"
-
+name: "HCL AppScan CodeSweep"
 on:
   push:
     branches: [ "master" ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "master" ]
-  schedule:
-    - cron: '42 23 * * 6'
-
+    types: [closed]
 jobs:
-  analyze:
-    name: Analyze
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java', 'javascript' ]
-
     steps:
-    - name: HCL AppScan CodeSweep
-      uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
+      - name: Publish issues to ASoC
+        uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
+        with:
+          asoc_key: ${{secrets.ASOC_KEY}}
+          asoc_secret: ${{secrets.ASOC_SECRET}}
+          publish_on_merge: true
+          application_id: b299aa12-2ba2-466e-8394-5316e53aa4b4
+    env: 
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+

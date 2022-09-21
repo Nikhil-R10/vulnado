@@ -9,17 +9,15 @@ on:
       logLevel:
         description: Log level
 jobs:
-  scan:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Run AppScan CodeSweep
+      - name: Publish issues to ASoC
         uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
         with:
           asoc_key: ${{secrets.ASOC_KEY}}
           asoc_secret: ${{secrets.ASOC_SECRET}}
+          application_id: b299aa12-2ba2-466e-8394-5316e53aa4b4
     env: 
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
 

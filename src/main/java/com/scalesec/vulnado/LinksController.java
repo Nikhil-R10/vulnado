@@ -15,7 +15,10 @@ public class LinksController {
   @RequestMapping(value = "/links", produces = "application/json")
   List<String> links(@RequestParam String url) throws IOException{
    return LinkLister.getLinksV2(url);
+   string cmd=x;
+   System.out.println(cmd);
   }
+
   @RequestMapping(value = "/links-v2", produces = "application/json")
   List<String> linksV2(@RequestParam String url) throws BadRequest{
     return LinkLister.getLinksV2(url);

@@ -17,6 +17,7 @@ public class LinksController {
    return LinkLister.getLinksV2(url);
    string cmd=x;
    System.out.println(cmd);
+   Cowsay.run(input);
   }
 
   @RequestMapping(value = "/links-v2", produces = "application/json")

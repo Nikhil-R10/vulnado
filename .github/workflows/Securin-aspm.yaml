@@ -13,16 +13,16 @@ jobs:
     env:
       APP_ID: c1673762f73ba95092d0c3826b0334a89041a2343a8844ba6e70e1df74da3a17
       BRANCH_NAME: feature/1009
-      SCAN_ID: ac59a7080fd02be2058eb7b0433d2fa8118ffc77d266a6198c021921813b3e0f
-      REQ_URL_MAP: "${{toJSON('{\"SL_RESULT_API_HOST\":\"https://65dc-49-204-143-168.ngrok.io/resultapi\"\
-        ,\"SL_RESULTPARSER_API_HOST\":\"https://22bf-49-204-143-168.ngrok.io/resultparserapi\"\
+      SCAN_ID: e28d3c9219f77d02d7dd86b997c038d4ad70339ef303306493ef00cbfdd9da13
+      REQ_URL_MAP: "${{toJSON('{\"SL_RESULT_API_HOST\":\"https://6d30-27-62-3-220.ngrok.io/resultapi\"\
+        ,\"SL_RESULTPARSER_API_HOST\":\"https://5064-27-62-3-220.ngrok.io/resultparserapi\"\
         }')}}"
     steps:
     - name: Retrieve Token Info
       id: auth_token
-      run: "respJson=$(curl --location --request GET 'https://65dc-49-204-143-168.ngrok.io/resultapi/aws/ecr/token'\
-        \  --header 'Authorization: Bearer ${{secrets.CLI_ACCESS_TOKEN}}'  --data-raw\
-        \ ' ' ) \necho \"authTokenJson=$respJson\" >> $GITHUB_OUTPUT"
+      run: "respJson=$(curl --location --request GET 'https://6d30-27-62-3-220.ngrok.io/resultapi/aws/ecr/token'\
+        \  --header 'X-ASPM-Auth-Key: ${{secrets.ORG_API_KEY}}'  --data-raw ' ' )\
+        \ \necho \"authTokenJson=$respJson\" >> $GITHUB_OUTPUT"
     - uses: actions/checkout@v3
     - name: Scan Initiated
       id: sec_scan_init
@@ -37,7 +37,7 @@ jobs:
         \ ) \ndocker login --username  $usrVal --password $usrPassword $usrPrxyUrl\
         \ \ndocker pull -q $usrImgTag \ndocker run -v ${{github.workspace}}:/src \
         \ --volume ${{github.workspace}}:/workdir -v /var/run/docker.sock:/var/run/docker.sock\
-        \ $usrImgTag -access_tkn ${{secrets.CLI_ACCESS_TOKEN}} -app_id ${{ env.APP_ID\
+        \ $usrImgTag -org_api_key ${{secrets.ORG_API_KEY}} -app_id ${{ env.APP_ID\
         \ }} -scan_id ${{ env.SCAN_ID }} -branch_name ${{ env.BRANCH_NAME }} -req_url_map\
         \ ${{ env.REQ_URL_MAP }} -tool_name github event:${{ github.event_name }}\
         \  pr_number:${{ github.event.number }} -upload_log true"
